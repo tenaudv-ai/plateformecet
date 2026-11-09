@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>Plateforme CET · v5.26</title>
+<title>Plateforme CET · v5.27</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Archivo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -469,6 +469,7 @@
 .dd-menu .ambiance input[type=range]{width:110px}
 .dd-titre{font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--text-dim); margin:4px 2px 0}
 .dd-qui{font-size:13px; padding:4px 2px 6px; color:var(--text)}
+#formateurOverlay .formateur-box{max-width:none; width:calc(100vw - 20px); height:calc(100vh - 20px); margin:10px}
 </style>
 
 <div class="pcb-grid"></div>
@@ -476,9 +477,9 @@
 
   <div class="topbar">
     <div class="dd" id="ddPlateforme">
-      <button class="dd-btn mark" onclick="ddToggle('ddPlateforme', event)" title="Paramètres de la plateforme">🎛️ Plateforme CET <span class="ver">v5.26</span> <span class="dd-car">▾</span></button>
+      <button class="dd-btn mark" onclick="ddToggle('ddPlateforme', event)" title="Paramètres de la plateforme">🎛️ Plateforme CET <span class="ver">v5.27</span> <span class="dd-car">▾</span></button>
       <div class="dd-menu">
-        <div class="dd-titre">Plateforme CET · version 5.26 du 09/11/2026</div>
+        <div class="dd-titre">Plateforme CET · version 5.27 du 09/11/2026</div>
         <div class="stats">
           <span><b id="statTotal">0</b>&nbsp;activités</span>
           <span><b id="statCat">0</b>&nbsp;catégories</span>
@@ -1247,7 +1248,7 @@
 
 </div>
 
-<footer class="hint">Plateforme CET · version 5.26 du 09/11/2026 · tous les tests, quiz et repérages en un seul endroit · liste mise à jour au fil de l'année</footer>
+<footer class="hint">Plateforme CET · version 5.27 du 09/11/2026 · tous les tests, quiz et repérages en un seul endroit · liste mise à jour au fil de l'année</footer>
 
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-box">
@@ -2363,7 +2364,7 @@
     deconnecter: function(){ try{ localStorage.removeItem(FKEY); }catch(e){} window.__codeFormateur = ""; majBoutonsFormateur(); if(document.getElementById("formateurOverlay").classList.contains("open")) closeFormateur(); }
   };
   var openFormOrig = window.openFormateur;
-  window.openFormateur = function(){ openFormOrig(); if(formateurActif()){ window.__codeFormateur = FORMATEUR_CODE; renderResultats(true); } };
+  window.openFormateur = function(){ if(window.lecture) lecture.quitter(); openFormOrig(); if(formateurActif()){ window.__codeFormateur = FORMATEUR_CODE; renderResultats(true); } };
   window.checkFormateurCode = function(){
     var val = document.getElementById("formateurCode").value;
     if(val === FORMATEUR_CODE){ window.__codeFormateur = val; panneauFormateur.connecter(); renderResultats(true); }
@@ -2442,14 +2443,17 @@
 
   // ---------- suivi du parcours (formateur) : tous les stagiaires, tous les exercices ----------
   var PITEMS = [{"id": "excel", "title": "Excel", "items": [{"id": "X-A1", "title": "Ma première somme", "kind": "xl"}, {"id": "X-A2", "title": "La commande du labo : les calculs", "kind": "xl"}, {"id": "X-AQ1", "title": "Quiz · La commande du labo", "kind": "quiz"}, {"id": "X-A3", "title": "Les compteurs de l’école : les calculs", "kind": "xl"}, {"id": "X-AQ2", "title": "Quiz · Les compteurs de l’école", "kind": "quiz"}, {"id": "X-A4", "title": "La feuille de présences", "kind": "xl"}, {"id": "X-AT", "title": "Quiz théorie · partie A", "kind": "quiz"}, {"id": "X-B1", "title": "Un tableau qui se lit", "kind": "xl"}, {"id": "X-B2", "title": "La commande du labo : l’histogramme", "kind": "xl"}, {"id": "X-BQ1", "title": "Quiz · L’histogramme", "kind": "quiz"}, {"id": "X-B3", "title": "Les compteurs de l’école : la courbe", "kind": "xl"}, {"id": "X-BQ2", "title": "Quiz · La courbe et la mise en page", "kind": "quiz"}, {"id": "X-BT", "title": "Quiz théorie · partie B", "kind": "quiz"}, {"id": "X-C1", "title": "Copier, c’est facile. Coller, c’est un choix", "kind": "xl"}, {"id": "X-CQ1", "title": "Quiz · Collage spécial", "kind": "quiz"}, {"id": "X-C2", "title": "Le budget du foyer", "kind": "xl"}, {"id": "X-CQ2", "title": "Quiz · Budget du foyer", "kind": "quiz"}, {"id": "X-CT", "title": "Quiz théorie · partie C", "kind": "quiz"}, {"id": "X-D1", "title": "L’inventaire du parc informatique", "kind": "xl"}, {"id": "X-DQ", "title": "Quiz · Tri, filtres, doublons", "kind": "quiz"}, {"id": "X-D2", "title": "Analyses avancées", "kind": "xl"}, {"id": "X-DT", "title": "Quiz théorie · partie D", "kind": "quiz"}, {"id": "X-E1", "title": "Les devis du mois", "kind": "xl"}, {"id": "X-EQ", "title": "Quiz · Les devis du mois", "kind": "quiz"}, {"id": "X-ET", "title": "Quiz théorie · partie E", "kind": "quiz"}]}, {"id": "word", "title": "Word", "items": [{"id": "W-A1", "title": "Les jeux vidéo", "kind": "wd"}, {"id": "W-A2", "title": "Les exploits de Gustave", "kind": "wd"}, {"id": "W-A3", "title": "Les énergies renouvelables", "kind": "wd"}, {"id": "W-AQ", "title": "Quiz · Word initiation", "kind": "quiz"}, {"id": "W-AT", "title": "Quiz théorie · partie A", "kind": "quiz"}, {"id": "W-B1", "title": "Ma première lettre NBN", "kind": "wd"}, {"id": "W-B2", "title": "Je résilie un abonnement", "kind": "wd"}, {"id": "W-B3", "title": "J’écris à la commune", "kind": "wd"}, {"id": "W-B4", "title": "J’écris à un avocat", "kind": "wd"}, {"id": "W-B5", "title": "Le rappel recommandé", "kind": "wd"}, {"id": "W-B6", "title": "Deux signataires", "kind": "wd"}, {"id": "W-B7", "title": "L’offre de prix calculée", "kind": "wd"}, {"id": "W-B8", "title": "La norme française", "kind": "wd"}, {"id": "W-BT", "title": "Quiz théorie · partie B", "kind": "quiz"}, {"id": "W-C1", "title": "Les tableaux : la fiche visiteur", "kind": "wtab"}, {"id": "W-C2", "title": "Le publipostage Ludimania", "kind": "wd"}, {"id": "W-C3", "title": "Les étiquettes d’adresse", "kind": "wd"}, {"id": "W-CQ", "title": "Quiz · Word intermédiaire", "kind": "quiz"}, {"id": "W-CT", "title": "Quiz théorie · partie C", "kind": "quiz"}, {"id": "W-D1", "title": "En-têtes, pieds de page et chapitres", "kind": "wd"}, {"id": "W-D2", "title": "Les références", "kind": "wd"}, {"id": "W-D3", "title": "Le chapitre 13", "kind": "wd"}, {"id": "W-D4", "title": "Synthèse guidée : le bilan Ludimania", "kind": "wd"}, {"id": "W-D5", "title": "Évaluation finale : le bilan Ludimania", "kind": "wd"}, {"id": "W-DT", "title": "Quiz théorie · partie D", "kind": "quiz"}]}];
+  var PARCOURS_OUVERT = true;   // parcours entièrement déverrouillé (réglage de build_parcours.py)
   var COMP = {"niveaux": {"1": "Débutant", "2": "Intermédiaire", "3": "Avancé", "4": "Expert"}, "sous": {"1": "Opérationnel · maîtrise initiale", "2": "Autonome · maîtrise professionnelle", "3": "Maîtrise approfondie · référent", "4": "Maîtrise stratégique · superviseur"}, "domaines": ["Accueil", "Téléphone", "Administratif", "Outils"], "ref": [{"id": "N1-ACC", "n": 1, "d": "Accueil", "t": "Saluer, identifier le visiteur et l’orienter vers le bon interlocuteur.", "p": [], "cours": {}}, {"id": "N1-TEL", "n": 1, "d": "Téléphone", "t": "Prendre un message clair, transférer un appel et appliquer les règles de politesse de base.", "p": [], "cours": {}}, {"id": "N1-ADM", "n": 1, "d": "Administratif", "t": "Saisir des données simples, affranchir le courrier et réaliser des photocopies.", "p": [["ex", "X-A1"], ["ex", "X-A4"], ["ex", "X-B1"], ["ex", "W-C1"]], "note": "La plateforme vérifie la saisie de données ; l’affranchissement et les photocopies sont à évaluer en situation.", "cours": {"Syllabus Excel 365 · Mes premiers pas": ["1 · Découvrir Excel", "2 · Les premières formules", "4 · Les fonctions de base", "5 · Mettre en forme un tableau", "7 · Mise en page et impression", "10 · La fonction SI", "13 · Le texte et les dates"], "Syllabus Word 365": ["7 · Les tableaux"]}}, {"id": "N1-OUT", "n": 1, "d": "Outils", "t": "Utiliser les fonctions basiques de la suite Office (Word, Excel) et la messagerie électronique.", "p": [["ex", "W-A1"], ["ex", "W-A2"], ["ex", "W-A3"], ["ex", "W-AQ"], ["ex", "W-AT"], ["ex", "X-A1"], ["ex", "X-A2"], ["ex", "X-A3"], ["ex", "X-A4"], ["ex", "X-AT"], ["res", "Test pratique : Word"], ["res", "Défi Outlook"]], "cours": {"Syllabus Excel 365 · Mes premiers pas": ["1 · Découvrir Excel", "2 · Les premières formules", "3 · Les références relatives et absolues", "4 · Les fonctions de base", "13 · Le texte et les dates"], "Syllabus Word 365": ["1 · Démarrer avec Word", "2 · Mettre en forme le texte et les paragraphes", "3 · Bordures et trame", "4 · Les styles", "5 · Puces, numérotation et listes à niveaux", "6 · Modèles et onglet Création", "7 · Les tableaux", "8 · Images, icônes et formes", "9 · La lettrine", "10 · La mise en page", "12 · Les tabulations", "13 · Table des matières, notes et références", "15 · Les graphiques SmartArt"]}}, {"id": "N2-ACC", "n": 2, "d": "Accueil", "t": "Filtrer les demandes, désamorcer les premiers mécontentements et gérer l’attente du public.", "p": [], "cours": {}}, {"id": "N2-TEL", "n": 2, "d": "Téléphone", "t": "Renseigner précisément les usagers ou clients sur les procédures courantes de l’entreprise.", "p": [], "cours": {}}, {"id": "N2-ADM", "n": 2, "d": "Administratif", "t": "Rédiger des courriers types, classer et archiver des dossiers selon une nomenclature établie, suivre les stocks de fournitures.", "p": [["ex", "W-B1"], ["ex", "W-B2"], ["ex", "W-B3"], ["ex", "W-B4"], ["ex", "W-B5"], ["ex", "W-B6"], ["ex", "W-B7"], ["ex", "W-B8"], ["ex", "W-BT"], ["ex", "W-C2"], ["ex", "X-D1"], ["res", "Test pratique : l"]], "note": "Courriers : parcours Word B · classement : explorateur de fichiers et nomenclature des noms de fichiers · stocks : inventaire X-D1.", "cours": {"Syllabus Excel 365 · Mes premiers pas": ["11 · Trier, filtrer, dédoublonner"], "Syllabus Word 365": ["2 · Mettre en forme le texte et les paragraphes", "5 · Puces, numérotation et listes à niveaux", "7 · Les tableaux", "10 · La mise en page", "12 · Les tabulations", "14 · Le publipostage"], "Cours sur les courriers": ["Chapitre 17 · Le courrier professionnel (lettres types et normes)", "Les écrits professionnels : lettre, e-mail, compte rendu"]}}, {"id": "N2-OUT", "n": 2, "d": "Outils", "t": "Maîtriser un logiciel de gestion d’accueil ou de prise de rendez-vous, utiliser des tableaux de suivi croisés simples.", "p": [["ex", "X-B1"], ["ex", "X-B2"], ["ex", "X-B3"], ["ex", "X-C1"], ["ex", "X-C2"], ["ex", "X-D2"], ["ex", "X-BT"], ["ex", "X-CT"], ["ex", "X-DT"]], "note": "Les tableaux de suivi sont vérifiés par le parcours Excel ; le logiciel de rendez-vous (agenda Outlook ou logiciel métier) est à évaluer en situation.", "cours": {"Syllabus Excel 365 · Mes premiers pas": ["5 · Mettre en forme un tableau", "6 · Les graphiques", "7 · Mise en page et impression", "8 · Copier, coller, collage spécial", "9 · Travailler avec plusieurs feuilles", "10 · La fonction SI", "11 · Trier, filtrer, dédoublonner", "12 · Compter et additionner sous condition", "13 · Le texte et les dates"]}}, {"id": "N3-ACC", "n": 3, "d": "Accueil", "t": "Prendre en charge les situations conflictuelles ou d’urgence, gérer les flux lors des pics d’activité.", "p": [], "cours": {}}, {"id": "N3-TEL", "n": 3, "d": "Téléphone", "t": "Traiter les réclamations complexes et assurer le suivi des litiges de premier niveau.", "p": [], "cours": {}}, {"id": "N3-ADM", "n": 3, "d": "Administratif", "t": "Préparer des dossiers administratifs complets (contrats, facturation, marchés publics), rédiger des comptes rendus de réunions.", "p": [["ex", "X-E1"], ["ex", "W-D5"]], "note": "Niveau avancé : seules les missions en autonomie comptent (X-E1 · devis et facturation, W-D5 · bilan, courrier fusionné et étiquettes sans pas à pas). Les contrats, marchés publics et comptes rendus réels sont à évaluer en situation.", "cours": {"Syllabus Excel 365 · Mes premiers pas": ["5 · Mettre en forme un tableau", "7 · Mise en page et impression", "12 · Compter et additionner sous condition", "13 · Le texte et les dates", "14 · Mission autonome : les devis du mois"], "Syllabus Word 365": ["4 · Les styles", "5 · Puces, numérotation et listes à niveaux", "11 · Sauts de page et sections", "13 · Table des matières, notes et références", "14 · Le publipostage"]}}, {"id": "N3-OUT", "n": 3, "d": "Outils", "t": "Maîtriser les fonctionnalités avancées des ERP ou logiciels métiers spécifiques à l’organisation.", "p": [["ex", "W-D5"], ["ex", "X-E1"]], "note": "Niveau avancé : seules les missions en autonomie comptent (W-D5 et X-E1, sans pas à pas). Les exercices guidés (publipostage W-C2, W-C3, synthèse guidée W-D4…) préparent ce niveau mais ne le prouvent pas. L’ERP de l’organisation est à évaluer en situation.", "cours": {"Syllabus Excel 365 · Mes premiers pas": ["5 · Mettre en forme un tableau", "7 · Mise en page et impression", "12 · Compter et additionner sous condition", "13 · Le texte et les dates", "14 · Mission autonome : les devis du mois"], "Syllabus Word 365": ["4 · Les styles", "5 · Puces, numérotation et listes à niveaux", "11 · Sauts de page et sections", "13 · Table des matières, notes et références", "14 · Le publipostage"]}}, {"id": "N4-ACC", "n": 4, "d": "Accueil", "t": "Concevoir et optimiser les livrets d’accueil, définir les standards de qualité de la relation client.", "p": [], "cours": {}}, {"id": "N4-TEL", "n": 4, "d": "Téléphone", "t": "Superviser le standard, analyser les statistiques d’appels pour optimiser les plannings.", "p": [], "cours": {}}, {"id": "N4-ADM", "n": 4, "d": "Administratif", "t": "Piloter des projets transverses, optimiser les circuits d’information internes et assurer la veille réglementaire.", "p": [], "cours": {}}, {"id": "N4-OUT", "n": 4, "d": "Outils", "t": "Administrer les bases de données et paramétrer les outils de gestion de la relation usager (CRM).", "p": [], "cours": {}}], "autonomes": ["X-E1", "W-D5"], "coursLiens": {"Syllabus Excel 365 · Mes premiers pas": "https://drive.google.com/file/d/16vleCe9vqPJD2OWimg2h1es-zZnsH3SL/view", "Syllabus Word 365": "https://drive.google.com/file/d/1J3fRENcwzQ9d2ye0K9_fWw090W4rvxHH/view", "Cours sur les courriers": "https://drive.google.com/file/d/1puKemiKejonP9_KQcZ7pAApMst8GilRi/view"}};
   var GAMI = {"missions": [{"id": "M01", "t": "excel", "n": "Calculer et vérifier des données", "ic": "🧮", "obj": "Utiliser formules, fonctions et références pour produire des résultats justes.", "ex": ["X-A1", "X-A2", "X-AQ1", "X-A3", "X-AQ2", "X-A4", "X-AT"], "b": "calcul", "bn": "Calcul maîtrisé", "bi": "🧮"}, {"id": "M02", "t": "excel", "n": "Produire un tableau lisible", "ic": "📋", "obj": "Mettre en forme, structurer et imprimer un tableau clair pour un lecteur.", "ex": ["X-B1", "X-B2", "X-BQ1", "X-B3", "X-BQ2", "X-BT"], "b": "tableau", "bn": "Tableau structuré", "bi": "📋"}, {"id": "M03", "t": "excel", "n": "Copier, relier, consolider", "ic": "🔗", "obj": "Relier des feuilles et des classeurs, consolider des données sans les ressaisir.", "ex": ["X-C1", "X-CQ1", "X-C2", "X-CQ2", "X-CT"], "b": "relies", "bn": "Données reliées", "bi": "🔗"}, {"id": "M04", "t": "excel", "n": "Gérer une liste de données", "ic": "🗂️", "obj": "Trier, filtrer et exploiter une liste pour retrouver l’information utile.", "ex": ["X-D1", "X-DQ", "X-D2", "X-DT"], "b": "liste", "bn": "Données maîtrisées", "bi": "🗂️"}, {"id": "M05", "t": "excel", "n": "Mission autonome Excel", "ic": "🚀", "obj": "Réaliser seul un dossier Excel complet, sans pas à pas.", "auto": true, "ex": ["X-E1", "X-EQ", "X-ET"], "b": "auto-xl", "bn": "Autonomie Excel", "bi": "🚀"}, {"id": "M06", "t": "word", "n": "Préparer un document professionnel", "ic": "📄", "obj": "Saisir, mettre en forme et mettre en page un document propre.", "ex": ["W-A1", "W-A2", "W-A3", "W-AQ", "W-AT"], "b": "document", "bn": "Document préparé", "bi": "📄"}, {"id": "M07", "t": "word", "n": "Rédiger un courrier professionnel", "ic": "✉️", "obj": "Produire des courriers et des documents conformes aux usages professionnels.", "ex": ["W-B1", "W-B2", "W-B3", "W-B4", "W-B5", "W-B6", "W-B7", "W-B8", "W-BT"], "b": "courrier", "bn": "Courrier conforme", "bi": "✉️"}, {"id": "M08", "t": "word", "n": "Produire en série", "ic": "📨", "obj": "Préparer un publipostage : lettres, étiquettes et enveloppes fusionnées.", "ex": ["W-C1", "W-C2", "W-C3", "W-CQ", "W-CT"], "b": "serie", "bn": "Publipostage réussi", "bi": "📨"}, {"id": "M09", "t": "word", "n": "Structurer un document long", "ic": "📚", "obj": "Styles, plan, table des matières et mise en page d’un document long.", "ex": ["W-D1", "W-D2", "W-D3", "W-D4"], "b": "long", "bn": "Document long structuré", "bi": "📚"}, {"id": "M10", "t": "word", "n": "Évaluation finale Word en autonomie", "ic": "🏁", "obj": "Réaliser seul une mission Word complète et réussir le test final.", "auto": true, "ex": ["W-D5", "W-DT"], "b": "auto-wd", "bn": "Autonomie Word", "bi": "🏁"}], "extra": [{"b": "premier", "bn": "Premier exercice réussi", "bi": "⭐", "crit": "Valider un premier exercice, quiz ou test du parcours."}, {"b": "expert", "bn": "Autonomie numérique", "bi": "🎓", "manuel": true, "comp": "N3-OUT", "crit": "Terminer les deux missions autonomes (Excel et Word) ET voir la compétence « Outils numériques · avancé » validée par le formateur."}], "seuil": 90};
-  var RET = '<div class="res-actions" style="margin:0 0 12px"><button class="res-clear" onclick="document.getElementById(\'formateurTitle\').textContent=\'🔑 Accès Valentin\'; renderResultats(true)">← Retour aux résultats</button></div>';
+  var RET0 = '<div class="res-actions" style="margin:0 0 12px"><button class="res-clear" onclick="document.getElementById(\'formateurTitle\').textContent=\'🔑 Accès Valentin\'; renderResultats(true)">← Retour aux résultats</button></div>', RET = RET0;
   window.panneauSuivi = {
     classe: "", piste: "excel", donnees: null,
     ouvrir: function(){
       var body = document.getElementById("formateurBody");
       document.getElementById("formateurTitle").textContent = "📋 Corrections par classe";
+      var RET = window.__lectureSeule ? '<div class="res-actions" style="margin:0 0 12px;display:flex;align-items:center;gap:12px"><span class="cl-msg" style="margin:0">🎓 Lecture seule : consultation uniquement, rien ne peut être modifié.</span><button class="res-clear" style="margin:0" onclick="lecture.deconnecter()">Se déconnecter</button></div>' : RET0;
+      if(window.__lectureSeule) document.getElementById("formateurTitle").textContent = "🎓 Accès formateur CET";
       if(!URL_()){ body.innerHTML = RET + '<p class="res-empty">Aucun Google Sheet n’est branché.</p>'; return; }
       body.innerHTML = RET + '<p class="res-empty">Chargement des classes…</p>';
       apiGet({ action: "classes", formateur: window.__codeFormateur || "" }).then(function(d){
@@ -2458,7 +2462,7 @@
         if(!panneauSuivi.classe || !cl.some(function(c){ return c.code === panneauSuivi.classe; })) panneauSuivi.classe = cl[0].code;
         body.innerHTML = RET + '<div class="res-filters"><select id="suClasse" onchange="panneauSuivi.classe=this.value; panneauSuivi.charger()">' +
           cl.map(function(c){ return '<option value="' + esc(c.code) + '"' + (c.code === panneauSuivi.classe ? ' selected' : '') + '>' + esc(c.nom) + ' (' + esc(c.code) + ')</option>'; }).join("") + '</select>' +
-          '<select id="suPiste" onchange="panneauSuivi.piste=this.value; panneauSuivi.dessiner()">' + PITEMS.map(function(t){ return '<option value="' + t.id + '"' + (t.id === panneauSuivi.piste ? ' selected' : '') + '>Parcours ' + esc(t.title) + '</option>'; }).join("") + '<option value="quiz"' + (panneauSuivi.piste === 'quiz' ? ' selected' : '') + '>Quiz et activités</option><option value="comp"' + (panneauSuivi.piste === 'comp' ? ' selected' : '') + '>🎯 Compétences (agent d’accueil)</option><option value="mis"' + (panneauSuivi.piste === 'mis' ? ' selected' : '') + '>🏅 Missions et badges</option></select>' +
+          '<select id="suPiste" onchange="panneauSuivi.piste=this.value; panneauSuivi.dessiner()"><option value="corr"' + (panneauSuivi.piste === 'corr' ? ' selected' : '') + '>📋 Corrections détaillées (par stagiaire)</option>' + PITEMS.map(function(t){ return '<option value="' + t.id + '"' + (t.id === panneauSuivi.piste ? ' selected' : '') + '>Parcours ' + esc(t.title) + '</option>'; }).join("") + '<option value="quiz"' + (panneauSuivi.piste === 'quiz' ? ' selected' : '') + '>Quiz et activités</option><option value="comp"' + (panneauSuivi.piste === 'comp' ? ' selected' : '') + '>🎯 Compétences (agent d’accueil)</option><option value="mis"' + (panneauSuivi.piste === 'mis' ? ' selected' : '') + '>🏅 Missions et badges</option></select>' +
           '<button class="res-clear" onclick="panneauSuivi.charger()">↻ Actualiser</button></div><div id="suWrap"></div><div id="suDetail"></div>' +
           '<p class="cl-msg" id="suAide">✅ validé (meilleur %) · ▶ accessible · 41 % = meilleur essai, pas encore validé · 🔒 pas encore accessible · 🔓 déverrouillé par toi · ⛔ verrouillé par toi · ⏭ laissé passer par toi.<br>Clique sur une case pour <b>déverrouiller, verrouiller ou laisser passer</b> un exercice pour ce stagiaire, ou sur le code d’un exercice (en-tête) pour toute la classe. « Automatique » remet la règle normale (90 % pour passer au suivant).</p>';
         panneauSuivi.charger();
@@ -2512,7 +2516,7 @@
     // ---- aperçus détaillés (sans ouvrir la page du stagiaire) ----
     statut: function(d, id, items){
       d = d || {}; var done = d.done || {}, pass = d.pass || {}, open = d.open || {}, lock = d.lock || {}, suite = true;
-      for(var i = 0; i < items.length; i++){ var k = items[i].id; if(k === id) break; if(!done[k] && !pass[k]) suite = false; }
+      if(!PARCOURS_OUVERT) for(var i = 0; i < items.length; i++){ var k = items[i].id; if(k === id) break; if(!done[k] && !pass[k]) suite = false; }
       if(done[id]) return '✅ validé'; if(pass[id]) return '⏭ passé'; if(lock[id]) return '⛔ verrouillé'; if(open[id] || suite) return (open[id] ? '🔓 ' : '▶ ') + 'accessible'; return '🔒 pas encore accessible';
     },
     dateC: function(t){ return t ? new Date(isNaN(+t) ? t : +t).toLocaleString("fr-BE", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) : ""; },
@@ -2651,10 +2655,10 @@
         (e.preuves.length ? '<table class="res-table" style="font-size:12px"><thead><tr><th>Preuve dans la plateforme</th><th>État</th><th>Meilleur</th></tr></thead><tbody>' + e.preuves.map(function(p){ return '<tr><td>' + esc(p.lab) + '</td><td>' + (p.ok ? '✅ réussi' : p.essai ? '◐ essayé' : '· pas fait') + '</td><td style="text-align:center">' + (p.pct !== undefined && p.pct !== null ? p.pct + ' %' : '—') + '</td></tr>'; }).join("") + '</tbody></table>' : '<p class="cl-msg">Aucun exercice de la plateforme ne couvre cette compétence : évalue-la en situation (mise en situation, stage, jeu de rôle).</p>') +
         panneauSuivi.compNotions(c) +
         (c.note ? '<p class="cl-msg">ℹ️ ' + esc(c.note) + '</p>' : '') +
-        '<div class="res-actions" style="margin-top:10px">' + btn("A", "✅ Acquis") + btn("EC", "🟡 En cours") + btn("NA", "❌ Non acquis") + btn("", "↺ Automatique (selon la plateforme)") + '</div><p class="cl-msg" id="compMsg"></p></div>';
+        (window.__lectureSeule ? '' : '<div class="res-actions" style="margin-top:10px">' + btn("A", "✅ Acquis") + btn("EC", "🟡 En cours") + btn("NA", "❌ Non acquis") + btn("", "↺ Automatique (selon la plateforme)") + '</div><p class="cl-msg" id="compMsg"></p>') + '</div>';
       dt.scrollIntoView({ block: "nearest" });
     },
-    compSet: function(si, cid, v){
+    compSet: function(si, cid, v){ if(window.__lectureSeule) return;
       var s = panneauSuivi.donnees[si], m = document.getElementById("compMsg"); if(m) m.textContent = "Enregistrement…";
       apiPost({ action: "competence", classe: panneauSuivi.classe, nom: s.nom, id: cid, valeur: v, formateur: window.__codeFormateur || "" }).then(function(r){
         s.data = s.data || {}; s.data.comp = (r && r.comp) || s.data.comp || {}; if(!r || !r.comp){ if(v) s.data.comp[cid] = { v: v, t: Date.now() }; else delete s.data.comp[cid]; }
@@ -2684,7 +2688,8 @@
     dessiner: function(){
       var w = document.getElementById("suWrap"); if(!w || !panneauSuivi.donnees) return;
       var dt = document.getElementById("suDetail"); if(dt) dt.innerHTML = "";
-      var aide = document.getElementById("suAide"); if(aide) aide.style.display = (panneauSuivi.piste === "quiz" || panneauSuivi.piste === "comp" || panneauSuivi.piste === "mis") ? "none" : "";
+      var aide = document.getElementById("suAide"); if(aide) aide.style.display = (window.__lectureSeule || panneauSuivi.piste === "corr" || panneauSuivi.piste === "quiz" || panneauSuivi.piste === "comp" || panneauSuivi.piste === "mis") ? "none" : "";
+      if(panneauSuivi.piste === "corr") return lecture.dessiner();
       if(panneauSuivi.piste === "quiz") return panneauSuivi.dessinerQuiz();
       if(panneauSuivi.piste === "comp") return panneauSuivi.dessinerComp();
       if(panneauSuivi.piste === "mis") return panneauSuivi.dessinerMis();
@@ -2702,7 +2707,7 @@
           else if(lk){ txt = '⛔'; titre = 'Verrouillé par toi'; style += 'background:var(--c3-dim);'; }
           else if(acces){ txt = (op ? '🔓' : '') + (b !== null ? '<b style="color:var(--c3)">' + b + ' %</b>' : (op ? '' : '▶')); titre = (op ? 'Déverrouillé par toi. ' : '') + (b !== null ? tries[id] + ' essai(s), meilleur ' + b + ' %' : 'Accessible, pas encore fait'); style += 'background:var(--surface-2);'; }
           else { txt = b !== null ? '<span style="color:var(--c3)">' + b + ' %</span>' : '🔒'; titre = 'Pas encore accessible (exercice précédent pas réussi)'; style += 'opacity:.55;'; }
-          if(!ok && !pa) suite = false;
+          if(!ok && !pa && !PARCOURS_OUVERT) suite = false;
           h += '<td style="' + style + '" title="' + esc(titre + ' — clic pour changer') + '" data-s="' + si + '" data-id="' + esc(id) + '">' + txt + '</td>';
         });
         h = h.replace('<td class="nbv"></td>', '<td style="text-align:center">' + nb + ' / ' + items.length + '</td>');
@@ -2728,12 +2733,12 @@
         setTimeout(function(){ document.addEventListener("click", function f(e){ if(!m.contains(e.target)){ m.remove(); document.removeEventListener("click", f); } }); }, 0);
       };
       Array.prototype.forEach.call(w.querySelectorAll("td[data-id]"), function(td){
-        td.onclick = function(){ var s = panneauSuivi.donnees[+td.getAttribute("data-s")]; menu(s.nom, td, [s.nom], td.getAttribute("data-id")); };
+        td.onclick = function(){ var s = panneauSuivi.donnees[+td.getAttribute("data-s")]; if(window.__lectureSeule) return panneauSuivi.ficheExercice(td.getAttribute("data-id"), [s.nom]); menu(s.nom, td, [s.nom], td.getAttribute("data-id")); };
       });
       Array.prototype.forEach.call(w.querySelectorAll("td[data-fiche]"), function(td){ td.onclick = function(){ panneauSuivi.ficheStagiaire(+td.getAttribute("data-fiche")); }; });
       w.insertAdjacentHTML("beforeend", '<div class="res-actions"><button class="res-clear" onclick="panneauSuivi.ficheClasse()">📊 Aperçu de la classe (tous les exercices)</button></div>');
       Array.prototype.forEach.call(w.querySelectorAll("th[data-col]"), function(th){
-        th.onclick = function(){ menu("toute la classe (" + panneauSuivi.donnees.length + " stagiaires)", th, panneauSuivi.donnees.map(function(s){ return s.nom; }), th.getAttribute("data-col")); };
+        th.onclick = function(){ if(window.__lectureSeule) return panneauSuivi.ficheExercice(th.getAttribute("data-col"), panneauSuivi.donnees.map(function(s){ return s.nom; })); menu("toute la classe (" + panneauSuivi.donnees.length + " stagiaires)", th, panneauSuivi.donnees.map(function(s){ return s.nom; }), th.getAttribute("data-col")); };
       });
     }
   };
@@ -2789,54 +2794,38 @@
   // ===== 🔎 Accès correcteur : consulter les corrections par classe, en lecture seule =====
   var LECTURE_CODE = "CET2026", LKEY = "panneau_lecture_session";
   var lecture = {
-    classe: "", donnees: [], sel: null,
+    sel: null,
     actif: function(){ try{ return localStorage.getItem(LKEY) === "1"; }catch(e){ return false; } },
     boite: function(){
       var o = document.getElementById("lectureOv");
       if(!o){
         o = document.createElement("div"); o.id = "lectureOv"; o.className = "formateur-overlay";
-        o.innerHTML = '<div class="formateur-box" style="max-width:1300px;height:92vh"><div class="formateur-head"><h3>🎓 Accès formateur CET · corrections par classe <span style="font-weight:400;font-size:12px;color:var(--text-dim)">· lecture seule</span></h3>' +
-          '<button class="modal-close" id="lectureDeco" style="display:none" onclick="lecture.deconnecter()">Se déconnecter</button><button class="modal-close" onclick="lecture.fermer()">✕ Fermer</button></div><div class="formateur-body" id="lectureBody"></div></div>';
+        o.innerHTML = '<div class="formateur-box" style="max-width:460px;height:auto"><div class="formateur-head"><h3>🎓 Accès formateur CET</h3><button class="modal-close" onclick="lecture.fermerCode()">✕ Fermer</button></div><div class="formateur-body" id="lectureBody"></div></div>';
         document.body.appendChild(o);
       }
       return o;
     },
-    ouvrir: function(){ this.boite().classList.add("open"); this.actif() ? this.classes() : this.ecranCode(); },
-    fermer: function(){ var o = document.getElementById("lectureOv"); if(o) o.classList.remove("open"); },
+    ouvrir: function(){ if(this.actif()) return this.entrer(); this.boite().classList.add("open"); this.ecranCode(); },
+    fermerCode: function(){ var o = document.getElementById("lectureOv"); if(o) o.classList.remove("open"); },
     ecranCode: function(){
-      document.getElementById("lectureDeco").style.display = "none";
-      document.getElementById("lectureBody").innerHTML = '<div class="lock-screen"><h3>🎓 Accès formateur CET</h3><p class="name-sub">Pour consulter les corrections des stagiaires, classe par classe. Rien ne peut être modifié depuis cet accès.</p>' +
+      document.getElementById("lectureBody").innerHTML = '<div class="lock-screen" style="margin:20px auto"><p class="name-sub">Pour consulter les parcours, les corrections, les quiz, les compétences et les missions des stagiaires, classe par classe. Rien ne peut être modifié depuis cet accès.</p>' +
         '<input type="password" id="lectureCode" placeholder="Code formateur CET" onkeydown="if(event.key===\'Enter\') lecture.valider()"><button onclick="lecture.valider()">Entrer</button><div class="lock-error" id="lectureErr">Code incorrect.</div></div>';
       setTimeout(function(){ var i = document.getElementById("lectureCode"); if(i) i.focus(); }, 50);
     },
     valider: function(){
       var v = (document.getElementById("lectureCode").value || "").trim();
-      if(v === LECTURE_CODE || v === FORMATEUR_CODE){ try{ localStorage.setItem(LKEY, "1"); }catch(e){} this.classes(); }
+      if(v === LECTURE_CODE || v === FORMATEUR_CODE){ try{ localStorage.setItem(LKEY, "1"); }catch(e){} this.fermerCode(); this.entrer(); }
       else document.getElementById("lectureErr").style.display = "block";
     },
-    deconnecter: function(){ try{ localStorage.removeItem(LKEY); }catch(e){} this.ecranCode(); },
-    classes: function(){
-      document.getElementById("lectureDeco").style.display = "";
-      var b = document.getElementById("lectureBody");
-      if(!URL_()){ b.innerHTML = '<p class="res-empty">Aucun Google Sheet n’est branché.</p>'; return; }
-      b.innerHTML = '<p class="res-empty">Chargement des classes…</p>';
-      apiGet({ action: "classes", formateur: FORMATEUR_CODE }).then(function(d){
-        var cl = d.classes || [];
-        if(!cl.length){ b.innerHTML = '<p class="res-empty">Aucune classe.</p>'; return; }
-        if(!lecture.classe || !cl.some(function(c){ return c.code === lecture.classe; })) lecture.classe = cl[0].code;
-        b.innerHTML = '<div class="res-filters"><label>Classe : <select id="lectureClasse" onchange="lecture.classe=this.value; lecture.sel=null; lecture.charger()">' +
-          cl.map(function(c){ return '<option value="' + esc(c.code) + '"' + (c.code === lecture.classe ? ' selected' : '') + '>' + esc(c.nom || c.code) + ' (' + esc(c.code) + ')</option>'; }).join("") +
-          '</select></label><button class="res-clear" style="margin:0" onclick="lecture.charger()">↻ Actualiser</button></div><div id="lectureWrap"></div>';
-        lecture.charger();
-      }).catch(function(e){ b.innerHTML = '<p class="res-empty" style="color:var(--c3)">⚠️ ' + esc(e.message || "Google Sheet injoignable") + '</p>'; });
+    entrer: function(){   // la fenêtre du suivi, en lecture seule
+      window.__lectureSeule = true; window.__codeFormateur = FORMATEUR_CODE;
+      document.getElementById("formateurOverlay").classList.add("open"); document.body.style.overflow = "hidden";
+      document.getElementById("formateurTitle").textContent = "🎓 Accès formateur CET";
+      if(!panneauSuivi.piste || panneauSuivi.piste === "excel") panneauSuivi.piste = "corr";
+      panneauSuivi.ouvrir();
     },
-    charger: function(){
-      var w = document.getElementById("lectureWrap"); if(!w) return; w.innerHTML = '<p class="res-empty">Chargement…</p>';
-      apiGet({ action: "suivi", classe: lecture.classe, formateur: FORMATEUR_CODE }).then(function(r){
-        lecture.donnees = (r.stagiaires || []).slice().sort(function(a, b){ return String(a.nom).localeCompare(String(b.nom), "fr"); });
-        lecture.dessiner();
-      }).catch(function(e){ w.innerHTML = '<p class="res-empty" style="color:var(--c3)">⚠️ ' + esc(e.message || "Google Sheet injoignable") + '</p>'; });
-    },
+    quitter: function(){ if(!window.__lectureSeule) return; window.__lectureSeule = false; window.__codeFormateur = window.__formateurActif ? FORMATEUR_CODE : ""; },
+    deconnecter: function(){ try{ localStorage.removeItem(LKEY); }catch(e){} if(typeof closeFormateur === "function") closeFormateur(); this.quitter(); },
     exos: function(){ var L = []; PITEMS.forEach(function(t){ t.items.forEach(function(it){ if(it.kind !== "quiz") L.push(it); }); }); return L; },
     case_: function(s, it){
       var d = s.data || {}, l = (d.last || {})[it.id], ok = (d.done || {})[it.id];
@@ -2845,19 +2834,21 @@
       return { t: l.p + " %", c: l.p >= 90 ? "var(--c2)" : l.p >= 50 ? "var(--accent)" : "var(--c3)", ti: l.ok + "/" + l.t + (nb ? " · " + nb + " point(s) à corriger" : " · rien à corriger") };
     },
     dessiner: function(){
-      var w = document.getElementById("lectureWrap"), E = lecture.exos();
-      if(!lecture.donnees.length){ w.innerHTML = '<p class="res-empty">Aucun stagiaire dans cette classe.</p>'; return; }
-      var h = '<p class="cl-msg">Dernier dépôt de chaque exercice (score du dernier essai). Clique sur un nom ou une case pour voir le détail des corrections.</p><div style="overflow:auto;max-height:40vh"><table class="res-table" style="font-size:12px"><thead><tr><th style="position:sticky;left:0;background:var(--surface)">Stagiaire</th>' +
+      var w = document.getElementById("suWrap"), E = lecture.exos(), D = panneauSuivi.donnees || [];
+      if(!w) return;
+      if(!D.length){ w.innerHTML = '<p class="res-empty">Aucun stagiaire dans cette classe.</p>'; return; }
+      var ordre = D.map(function(s, si){ return si; }).sort(function(a, b){ return String(D[a].nom).localeCompare(String(D[b].nom), "fr"); });
+      var h = '<p class="cl-msg">Dernier dépôt de chaque exercice (score du dernier essai). Clique sur un nom ou une case pour voir le détail des corrections.</p><div style="overflow:auto;max-height:45vh"><table class="res-table" style="font-size:12px"><thead><tr><th style="position:sticky;left:0;background:var(--surface)">Stagiaire</th>' +
         E.map(function(it){ return '<th style="text-align:center" title="' + esc(it.title) + '">' + esc(it.id) + '</th>'; }).join("") + '</tr></thead><tbody>';
-      lecture.donnees.forEach(function(s, si){
+      ordre.forEach(function(si){ var s = D[si];
         h += '<tr><td style="position:sticky;left:0;background:var(--surface);white-space:nowrap"><a href="#" onclick="lecture.voir(' + si + ');return false" style="color:var(--text);font-weight:700">' + esc(s.nom) + '</a></td>' +
           E.map(function(it){ var c = lecture.case_(s, it); return '<td style="text-align:center;cursor:pointer;color:' + c.c + ';white-space:nowrap" title="' + esc(c.ti) + '" onclick="lecture.voir(' + si + ',\'' + it.id + '\')">' + c.t + '</td>'; }).join("") + '</tr>';
       });
-      w.innerHTML = h + '</tbody></table></div><div id="lectureDetail"></div>';
-      if(lecture.sel) lecture.voir(lecture.sel[0], lecture.sel[1]);
+      w.innerHTML = h + '</tbody></table></div>';
+      if(lecture.sel && D[lecture.sel[0]]) lecture.voir(lecture.sel[0], lecture.sel[1]);
     },
     voir: function(si, id){
-      lecture.sel = [si, id]; var s = lecture.donnees[si], d = (s && s.data) || {}, z = document.getElementById("lectureDetail"); if(!z) return;
+      lecture.sel = [si, id]; var s = (panneauSuivi.donnees || [])[si], d = (s && s.data) || {}, z = document.getElementById("suDetail"); if(!z || !s) return;
       var E = lecture.exos().filter(function(it){ return (d.last || {})[it.id] || (d.done || {})[it.id]; });
       var h = '<h3 style="margin:18px 0 8px">📋 ' + esc(s.nom) + ' — corrections</h3>';
       if(!E.length){ z.innerHTML = h + '<p class="res-empty">Aucun exercice déposé pour l’instant.</p>'; return; }
@@ -2879,6 +2870,7 @@
       if(id){ var el = z.querySelector("details[open]"); if(el) el.scrollIntoView({ block: "nearest" }); }
     }
   };
+  var _closeF = window.closeFormateur; window.closeFormateur = function(){ var r = _closeF.apply(this, arguments); lecture.quitter(); return r; };
   window.lecture = lecture; window.openLecture = function(){ lecture.ouvrir(); };
 
   // formateur connecté : ouvrir les activités sans choisir de stagiaire (aperçu)
