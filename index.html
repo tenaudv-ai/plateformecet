@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>Plateforme CET · v5.89</title>
+<title>Plateforme CET · v5.90</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Archivo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -481,7 +481,7 @@
 
   <div class="topbar">
     <div class="dd" id="ddPlateforme">
-      <button class="dd-btn mark" onclick="ddToggle('ddPlateforme', event)" title="Paramètres de la plateforme">🎛️ Plateforme CET <span class="ver">v5.89</span> <span class="dd-car">▾</span></button>
+      <button class="dd-btn mark" onclick="ddToggle('ddPlateforme', event)" title="Paramètres de la plateforme">🎛️ Plateforme CET <span class="ver">v5.90</span> <span class="dd-car">▾</span></button>
       <div class="dd-menu">
         <div class="dd-titre">Plateforme CET · version 5.50 du 16/11/2026</div>
         <div class="stats">
@@ -2522,7 +2522,7 @@
       var sel = document.getElementById("suClasse"), cn = sel && sel.selectedIndex >= 0 ? sel.options[sel.selectedIndex].text : (panneauSuivi.classe || "");
       var L = (panneauSuivi.donnees || []).map(function(st){ var d = st.data || {}; return { nom: st.nom, d: (d.qd || {})["W-ORT"] || null, last: (d.last || {})["W-ORT"] || null }; });
       var html = '<script>window.__rapportClasse = ' + JSON.stringify(L).replace(/</g, "\\u003c") + '; window.__classeNom = ' + JSON.stringify(cn).replace(/</g, "\\u003c") + ';<\/script>' + new TextDecoder().decode(u);
-      var url = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+      var url = URL.createObjectURL(new Blob([html], { type: "text/html;charset=utf-8" }));   // charset obligatoire : les données de la classe repoussent la balise <meta charset>
       var w = window.open(url, "_blank");
       if(!w){ var a = document.createElement("a"); a.href = url; a.download = "Orthographe_1er_test_classe.html"; document.body.appendChild(a); a.click(); a.remove(); }
     },
