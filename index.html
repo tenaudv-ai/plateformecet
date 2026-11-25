@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>Plateforme CET · v6.05</title>
+<title>Plateforme CET · v6.06</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Archivo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -481,7 +481,7 @@
 
   <div class="topbar">
     <div class="dd" id="ddPlateforme">
-      <button class="dd-btn mark" onclick="ddToggle('ddPlateforme', event)" title="Paramètres de la plateforme">🎛️ Plateforme CET <span class="ver">v6.05</span> <span class="dd-car">▾</span></button>
+      <button class="dd-btn mark" onclick="ddToggle('ddPlateforme', event)" title="Paramètres de la plateforme">🎛️ Plateforme CET <span class="ver">v6.06</span> <span class="dd-car">▾</span></button>
       <div class="dd-menu">
         <div class="dd-titre">Plateforme CET · version 5.50 du 16/11/2026</div>
         <div class="stats">
@@ -2655,7 +2655,7 @@
       if(e.man === "EC") return ['🟡', 'En cours (noté par toi)', ''];
       if(e.man === "NA") return ['❌', 'Non acquis (noté par toi)', 'background:var(--c3-dim);'];
       if(e.auto === "complet") return ['🟢<br><span class="cl-sync" style="margin:0;font-weight:700">' + e.ok + '/' + e.n + '</span>', 'Toutes les preuves de la plateforme sont validées (100 %) : à confirmer', 'background:rgba(34,197,94,.55);box-shadow:inset 0 0 0 2px #22c55e;'];
-      if(e.auto === "encours") return ['◐<br><span class="cl-sync" style="margin:0">' + e.ok + '/' + e.n + '</span>', e.ok + ' preuve(s) validée(s) sur ' + e.n + ' (' + Math.round(e.ok / e.n * 100) + ' %)', e.ok / e.n >= .8 ? 'background:rgba(74,222,128,.32);' : ''];
+      if(e.auto === "encours") return ['◐<br><span class="cl-sync" style="margin:0">' + e.ok + '/' + e.n + '</span>', e.ok + ' preuve(s) validée(s) sur ' + e.n + ' (' + Math.round(e.ok / e.n * 100) + ' %)', e.ok / e.n >= .75 ? 'background:rgba(74,222,128,.32);' : ''];
       if(e.auto === "rien") return ['<span style="opacity:.5">·</span>', 'Pas encore commencé (' + e.n + ' preuve(s) dans la plateforme)', ''];
       return ['<span style="opacity:.6">✋</span>', 'Hors plateforme : à évaluer en situation par toi', ''];
     },
@@ -2712,7 +2712,7 @@
           h += '<td data-cs="' + si + '" data-cid="' + c.id + '" style="text-align:center;cursor:pointer;' + ic[2] + '" title="' + esc(c.t + ' — ' + ic[1].replace(/<[^>]+>/g, '') + ' — clic pour le détail') + '">' + ic[0] + '</td>'; }); });
         h += '</tr>';
       });
-      w.innerHTML = h + '</tbody></table></div><p class="cl-msg">✅ acquis (validé par toi) · <span style="background:rgba(34,197,94,.55);box-shadow:inset 0 0 0 2px #22c55e;padding:0 4px;border-radius:3px">🟢 vert vif</span> toutes les preuves de la plateforme sont réussies (100 %), à confirmer · <span style="background:rgba(74,222,128,.32);padding:0 4px;border-radius:3px">vert clair</span> au moins 80 % des preuves réussies · ◐ en cours (preuves réussies / preuves) · · pas commencé · ✋ hors plateforme, à évaluer en situation · 🟡 / ❌ en cours / non acquis (noté par toi).<br>« Niveau atteint » : le plus haut niveau dont toutes les compétences du domaine sont acquises (<sup>?</sup> = au moins une est encore à confirmer). Clique sur une case pour voir les preuves et noter la compétence, ou sur un nom pour sa fiche imprimable.<br>Niveaux 3 (Avancé) et 4 (Expert) : seules les missions <b>en autonomie, sans pas à pas</b> comptent comme preuves (' + esc((COMP.autonomes || []).join(', ')) + ') ; les exercices guidés ne valident que les niveaux 1 et 2.</p>';
+      w.innerHTML = h + '</tbody></table></div><p class="cl-msg">✅ acquis (validé par toi) · <span style="background:rgba(34,197,94,.55);box-shadow:inset 0 0 0 2px #22c55e;padding:0 4px;border-radius:3px">🟢 vert vif</span> toutes les preuves de la plateforme sont réussies (100 %), à confirmer · <span style="background:rgba(74,222,128,.32);padding:0 4px;border-radius:3px">vert clair</span> au moins 75 % des preuves réussies (3/4) · ◐ en cours (preuves réussies / preuves) · · pas commencé · ✋ hors plateforme, à évaluer en situation · 🟡 / ❌ en cours / non acquis (noté par toi).<br>« Niveau atteint » : le plus haut niveau dont toutes les compétences du domaine sont acquises (<sup>?</sup> = au moins une est encore à confirmer). Clique sur une case pour voir les preuves et noter la compétence, ou sur un nom pour sa fiche imprimable.<br>Niveaux 3 (Avancé) et 4 (Expert) : seules les missions <b>en autonomie, sans pas à pas</b> comptent comme preuves (' + esc((COMP.autonomes || []).join(', ')) + ') ; les exercices guidés ne valident que les niveaux 1 et 2.</p>';
       Array.prototype.forEach.call(w.querySelectorAll("td[data-cid]"), function(td){ td.onclick = function(){ panneauSuivi.compDetail(+td.getAttribute("data-cs"), td.getAttribute("data-cid")); }; });
       Array.prototype.forEach.call(w.querySelectorAll("td[data-cfiche]"), function(td){ td.onclick = function(){ panneauSuivi.compFiche(+td.getAttribute("data-cfiche")); }; });
     },
